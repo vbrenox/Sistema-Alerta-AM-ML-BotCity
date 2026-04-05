@@ -24,7 +24,7 @@ URL_ONS      = "https://dados.ons.org.br/dataset/dados_hidrologicos_ho"
 URL_ANEEL    = "https://dadosabertos.aneel.gov.br/dataset/bandeiras-tarifarias"
 OUTPUT_PATH  = "telemetria_energia.json"
 
-# Pasta do próprio bot — funciona local e no Maestro
+# Pasta do próprio bot, local e no Maestro
 BOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 

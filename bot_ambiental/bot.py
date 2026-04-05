@@ -118,7 +118,7 @@ def coletar_iqar(bot):
         # Força recarregamento para evitar dados em cache
         bot.execute_javascript("location.reload(true);")
         bot.wait(5000)
-        print("[IQAr] Página recarregada — cache limpo.")
+        print("[BOT AMBIENTAL]-[IQAr] Página recarregada, CTRL + F5, cache limpo.")
 
         # XPath do elemento que exibe o número do índice
         xpath = "//*[@id='body-main-wrapper']/div/div[1]/div/div[5]/div/div[1]/div[3]/div[1]/div[1]/div[1]/span"
@@ -130,13 +130,13 @@ def coletar_iqar(bot):
 
         # Classifica pelo índice AQI internacional
         if indice <= 50:
-            nivel = "[Bom]"
+            nivel = "Bom"
         elif indice <= 100:
-            nivel = "[Moderado]"
+            nivel = "Moderado"
         elif indice <= 150:
-            nivel = "[Insalubre para grupos sensíveis]"
+            nivel = "Insalubre para grupos sensíveis"
         else:
-            nivel = "[Insalubre]"
+            nivel = "Insalubre"
 
         return {"iqar_manaus": indice, "iqar_nivel": nivel}
 
