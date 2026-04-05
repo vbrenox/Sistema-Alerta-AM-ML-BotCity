@@ -17,13 +17,23 @@ except Exception:
     execution = None
     MAESTRO_ATIVO = False
 
-# Carrega variáveis do .env
-load_dotenv()
-
-TWILIO_SID   = os.getenv("TWILIO_SID")
-TWILIO_TOKEN = os.getenv("TWILIO_TOKEN")
-TWILIO_FROM  = os.getenv("TWILIO_FROM")
-TWILIO_TO    = os.getenv("TWILIO_TO")
+# busca do Credentials Vault do Maestro
+if MAESTRO_ATIVO:
+    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_SID")
+    TWILIO_SID   = cred.value
+    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TOKEN")
+    TWILIO_TOKEN = cred.value
+    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_FROM")
+    TWILIO_FROM  = cred.value
+    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TO")
+    TWILIO_TO    = cred.value
+else:
+    # Fallback pro .env quando rodar local
+    load_dotenv()
+    TWILIO_SID   = os.getenv("TWILIO_SID")
+    TWILIO_TOKEN = os.getenv("TWILIO_TOKEN")
+    TWILIO_FROM  = os.getenv("TWILIO_FROM")
+    TWILIO_TO    = os.getenv("TWILIO_TO")
 
 # Configurações
 SCOPES = [
