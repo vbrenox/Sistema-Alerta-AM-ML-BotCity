@@ -51,15 +51,15 @@ def definir_status(ambiental, energia):
 
     # Regra 1 — Alerta Crítico: risco energético e tarifário simultâneos
     if balbina < 30 and "Verde" not in bandeira:
-        return "🔴 ALERTA CRÍTICO"
+        return "[ALERTA CRÍTICO]"
 
     # Regra 2 — Atenção: qualquer indicador ambiental ou energético elevado
     elif focos > 20 or iqar > 100 or balbina < 50:
-        return "🟠 ATENÇÃO"
+        return "[ATENÇÃO]"
 
     # Regra 3 — Normal: todos os indicadores dentro do esperado
     else:
-        return "🟢 NORMAL"
+        return "[NORMAL]"
 
 
 def gravar_sheets(ambiental, energia, status):

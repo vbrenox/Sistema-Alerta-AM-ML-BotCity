@@ -76,7 +76,7 @@ def coletar_rio_negro(bot):
 def coletar_focos_inpe(bot):
     # Acessa o INPE, rola até as tabelas, clica em 48h e coleta os focos do AM
     try:
-        print("[INPE] Acessando portal de situação atual...")
+        print("[BOT AMBIENTAL]-[INPE] Acessando portal de situação atual...")
         bot.browse(URL_INPE)
         bot.wait(5000)
 
@@ -93,7 +93,7 @@ def coletar_focos_inpe(bot):
         bot.wait(3000)
 
         # Redireciona para a página com a tabela de focos por estado
-        print("[INPE] Redirecionando para tabela de focos por estado...")
+        print("[BOT AMBIENTAL]-[INPE] Redirecionando para tabela de focos por estado...")
         bot.browse(URL_INPE_48H)
         bot.wait(3000)
 
@@ -105,7 +105,7 @@ def coletar_focos_inpe(bot):
         return {"focos_incendio_am": focos}
 
     except Exception as e:
-        print(f"[INPE] Erro ao coletar focos: {e}")
+        print(f"[BOT AMBIENTAL]-[INPE] Erro ao coletar focos: {e}")
         return {"focos_incendio_am": "Sem foco de incêndio nas últimas 48h"}
 
 
@@ -130,13 +130,13 @@ def coletar_iqar(bot):
 
         # Classifica pelo índice AQI internacional
         if indice <= 50:
-            nivel = "✅ Bom"
+            nivel = "[Bom]"
         elif indice <= 100:
-            nivel = "🟡 Moderado"
+            nivel = "[Moderado]"
         elif indice <= 150:
-            nivel = "🟠 Insalubre para grupos sensíveis"
+            nivel = "[Insalubre para grupos sensíveis]"
         else:
-            nivel = "🔴 Insalubre"
+            nivel = "[Insalubre]"
 
         return {"iqar_manaus": indice, "iqar_nivel": nivel}
 

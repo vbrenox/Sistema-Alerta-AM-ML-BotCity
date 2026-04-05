@@ -1,0 +1,9 @@
+botcity-framework-web
+botcity-maestro-sdk
+google-auth==2.49.1
+google-auth-oauthlib==1.3.0
+gspread==6.2.1
+python-dotenv==1.2.2
+requests==2.33.0
+twilio==9.10.4
+webdriver-manager

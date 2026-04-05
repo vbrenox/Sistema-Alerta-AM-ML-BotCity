@@ -1,0 +1,15 @@
+venv/
+.venv/
+env/
+
+__pycache__/
+*.pyc
+
+.idea/
+.vscode/
+
+venv/
+config/credentials.json
+data/*.json
+data/*.csv
+.env

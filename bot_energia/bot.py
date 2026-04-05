@@ -137,16 +137,16 @@ def coletar_bandeira(bot):
 
         # Classifica do mais específico pro mais genérico
         if "VERMELHA 2" in bandeira_texto or "PATAMAR 2" in bandeira_texto:
-            bandeira = "🟥 Vermelha 2"
+            bandeira = "Vermelha 2"
             impacto  = "Acréscimo de R$ 7,87 por 100 kWh"
         elif "VERMELHA" in bandeira_texto:
-            bandeira = "🟥 Vermelha 1"
+            bandeira = "Vermelha 1"
             impacto  = "Acréscimo de R$ 4,46 por 100 kWh"
         elif "AMARELA" in bandeira_texto:
-            bandeira = "🟨 Amarela"
+            bandeira = "Amarela"
             impacto  = "Acréscimo de R$ 1,88 por 100 kWh"
         else:
-            bandeira = "🟩 Verde"
+            bandeira = "Verde"
             impacto  = "Sem custo adicional na conta de luz"
 
         print(f"[BOT ENERGIA] CSV Bandeira processado: {arquivo}")
