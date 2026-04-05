@@ -20,19 +20,41 @@ SHEET_ID = "1wG6icQpwUmfjaL0KruwXelH9iAKV_UfRjwOURZXJDqE"
 # Caminhos dos arquivos
 BOT_DIR          = os.path.dirname(os.path.abspath(__file__))
 RAIZ             = os.path.dirname(BOT_DIR)
-CREDENTIALS_PATH = os.path.join(RAIZ, "config", "oauth_credentials.json")
+CREDENTIALS_PATH = os.path.join(BOT_DIR, "config", "oauth_credentials.json")
 AMBIENTAL_PATH   = os.path.join(RAIZ, "bot_ambiental", "telemetria_ambiental.json")
 ENERGIA_PATH     = os.path.join(RAIZ, "bot_energia", "telemetria_energia.json")
 
 
 
 def carregar_dados():
-    # Lê os JSONs gerados pelos bots ambiental e energia
-    with open(AMBIENTAL_PATH, encoding="utf-8") as f:
-        ambiental = json.load(f)
-    with open(ENERGIA_PATH, encoding="utf-8") as f:
-        energia = json.load(f)
+    if MAESTRO_ATIVO:
+        # Lista todos os artefatos e baixa os JSONs necessários
+        artifacts = maestro.list_artifacts()
+
+        for artifact in artifacts:
+            if artifact.name == "telemetria_ambiental.json":
+                name, content = maestro.get_artifact(artifact_id=artifact.id)
+                with open(name, "wb") as f:
+                    f.write(content)
+            if artifact.name == "telemetria_energia.json":
+                name, content = maestro.get_artifact(artifact_id=artifact.id)
+                with open(name, "wb") as f:
+                    f.write(content)
+
+        with open("telemetria_ambiental.json", encoding="utf-8") as f:
+            ambiental = json.load(f)
+        with open("telemetria_energia.json", encoding="utf-8") as f:
+            energia = json.load(f)
+    else:
+        BOT_DIR = os.path.dirname(os.path.abspath(__file__))
+        RAIZ    = os.path.dirname(BOT_DIR)
+        with open(os.path.join(RAIZ, "bot_ambiental", "telemetria_ambiental.json"), encoding="utf-8") as f:
+            ambiental = json.load(f)
+        with open(os.path.join(RAIZ, "bot_energia", "telemetria_energia.json"), encoding="utf-8") as f:
+            energia = json.load(f)
+
     return ambiental, energia
+
 
 
 def definir_status(ambiental, energia):
@@ -98,16 +120,16 @@ def main():
         maestro.post_artifact(
             task_id=execution.task_id,
             artifact_name="telemetria_ambiental.json",
-            filepath=AMBIENTAL_PATH
+            filepath="telemetria_ambiental.json"
         )
         maestro.post_artifact(
             task_id=execution.task_id,
             artifact_name="telemetria_energia.json",
-            filepath=ENERGIA_PATH
+            filepath="telemetria_energia.json"
         )
         maestro.finish_task(
             task_id=execution.task_id,
-            status=AutomationTask.Status.SUCCESS,
+            status=AutomationTask.finish_status.SUCCESS,
             message=f"Controlador concluído! Status: {status}"
         )
 

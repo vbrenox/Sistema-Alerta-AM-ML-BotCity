@@ -1,11 +1,11 @@
 import json
 import os
+from botcity.plugins.twilio import whatsapp
 from dotenv import load_dotenv
-from twilio.rest import Client
 from datetime import datetime
 from botcity.maestro import BotMaestroSDK, AutomationTask
 from botcity.plugins.googlesheets import BotGoogleSheetsPlugin
-
+from botcity.plugins.twilio.whatsapp import BotTwilioWhatsappPlugin
 # Maestro
 try:
     maestro = BotMaestroSDK.from_sys_args()
@@ -38,7 +38,7 @@ else:
 
 BOT_DIR          = os.path.dirname(os.path.abspath(__file__))
 RAIZ             = os.path.dirname(BOT_DIR)
-CREDENTIALS_PATH = os.path.join(RAIZ, "config", "oauth_credentials.json")
+CREDENTIALS_PATH = os.path.join(BOT_DIR, "config", "oauth_credentials.json")
 SHEET_ID         = "1wG6icQpwUmfjaL0KruwXelH9iAKV_UfRjwOURZXJDqE"
 OUTPUT_PATH      = "alerta_enviado.txt"
 
@@ -153,18 +153,23 @@ def montar_mensagem(ambiental, energia):
 
 
 def enviar_whatsapp(mensagem):
-    # Envia a mensagem de alerta via Twilio WhatsApp
+    # Envia a mensagem via plugin BotCity Twilio WhatsApp
     if not TWILIO_SID or not TWILIO_TOKEN:
         print("[BOT ALERTA] Credenciais Twilio não encontradas!")
         return
 
-    client  = Client(TWILIO_SID, TWILIO_TOKEN)
-    message = client.messages.create(
-        from_=TWILIO_FROM,
-        body=mensagem,
-        to=TWILIO_TO
+    whatsapp = BotTwilioWhatsappPlugin(
+        account_sid=TWILIO_SID,
+        auth_token=TWILIO_TOKEN,
+        whatsapp_number=TWILIO_FROM
     )
-    print(f"[BOT ALERTA] Alerta enviado! SID: {message.sid}")
+
+    whatsapp.send_message(
+        to_number=TWILIO_TO,
+        msg_content=mensagem
+    )
+
+    print("[BOT ALERTA] Alerta enviado via plugin BotCity!")
     print("\n--- Mensagem Enviada ---\n")
     print(mensagem)
 
@@ -191,7 +196,7 @@ def main():
         )
         maestro.finish_task(
             task_id=execution.task_id,
-            status=AutomationTask.Status.SUCCESS,
+            status=AutomationTask.finish_status.SUCCESS,
             message="Alerta enviado com sucesso!"
         )
 

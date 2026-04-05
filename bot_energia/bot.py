@@ -210,7 +210,7 @@ def main():
             )
             maestro.finish_task(
                 task_id=execution.task_id,
-                status=AutomationTask.Status.SUCCESS,
+                status=AutomationTask.finish_status.SUCCESS,
                 message="Coleta energética concluída!"
             )
 
@@ -219,7 +219,7 @@ def main():
         if MAESTRO_ATIVO:
             maestro.finish_task(
                 task_id=execution.task_id,
-                status=AutomationTask.Status.FAILED,
+                status=AutomationTask.finish_status.FAILED,
                 message=f"Erro: {str(e)}"
             )
     finally:
