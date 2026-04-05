@@ -7,3 +7,4 @@ python-dotenv==1.2.2
 requests==2.33.0
 twilio==9.10.4
 webdriver-manager
+botcity-googlesheets-plugin

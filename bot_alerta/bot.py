@@ -1,11 +1,10 @@
 import json
 import os
-import gspread
 from dotenv import load_dotenv
 from twilio.rest import Client
 from datetime import datetime
-from google.oauth2.service_account import Credentials
 from botcity.maestro import BotMaestroSDK, AutomationTask
+from botcity.plugins.googlesheets import BotGoogleSheetsPlugin
 
 # Maestro
 try:
@@ -36,47 +35,45 @@ else:
     TWILIO_TO    = os.getenv("TWILIO_TO")
 
 # Configurações
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
 
 BOT_DIR          = os.path.dirname(os.path.abspath(__file__))
 RAIZ             = os.path.dirname(BOT_DIR)
-CREDENTIALS_PATH = os.path.join(RAIZ, "config", "credentials.json")
-SHEET_NAME       = "SistemaAlertaAM"
+CREDENTIALS_PATH = os.path.join(RAIZ, "config", "oauth_credentials.json")
+SHEET_ID         = "1wG6icQpwUmfjaL0KruwXelH9iAKV_UfRjwOURZXJDqE"
 OUTPUT_PATH      = "alerta_enviado.txt"
 
 
 def carregar_dados():
     # Lê a última linha gravada pelo bot controlador no Google Sheets
-    creds  = Credentials.from_service_account_file(CREDENTIALS_PATH, scopes=SCOPES)
-    client = gspread.authorize(creds)
+    bot_sheets = BotGoogleSheetsPlugin(CREDENTIALS_PATH, SHEET_ID)
 
-    planilha  = client.open(SHEET_NAME)
-    aba       = planilha.sheet1
-    registros = aba.get_all_records()
+    # Pega todos os registros e retorna o último
+    registros = bot_sheets.as_list()
 
     if not registros:
         print("[BOT ALERTA] Planilha vazia!")
         return {}, {}
 
-    ultima_linha = registros[-1]
-    print(f"[BOT ALERTA] Dados lidos do Sheets: {ultima_linha}")
+    # Pega o cabeçalho e a última linha
+    cabecalho  = registros[0]
+    ultima     = registros[-1]
 
-    # Reconstrói os dicionários no mesmo formato dos JSONs
+    # Mapeia os valores pelo índice do cabeçalho
+    linha = dict(zip(cabecalho, ultima))
+    print(f"[BOT ALERTA] Dados lidos do Sheets: {linha}")
+
     ambiental = {
-        "timestamp"        : ultima_linha.get("Timestamp"),
-        "rio_negro_manaus" : ultima_linha.get("Rio Negro (m)"),
-        "focos_incendio_am": ultima_linha.get("Focos AM"),
-        "iqar_manaus"      : ultima_linha.get("IQAr"),
-        "iqar_nivel"       : ultima_linha.get("Nível IQAr")
+        "timestamp"        : linha.get("Timestamp"),
+        "rio_negro_manaus" : linha.get("Rio Negro (m)"),
+        "focos_incendio_am": linha.get("Focos AM"),
+        "iqar_manaus"      : linha.get("IQAr"),
+        "iqar_nivel"       : linha.get("Nível IQAr")
     }
 
     energia = {
-        "balbina_volume_util": ultima_linha.get("Balbina (%)"),
-        "bandeira_tarifaria" : ultima_linha.get("Bandeira"),
-        "impacto_tarifa"     : ultima_linha.get("Impacto Tarifa")
+        "balbina_volume_util": linha.get("Balbina (%)"),
+        "bandeira_tarifaria" : linha.get("Bandeira"),
+        "impacto_tarifa"     : linha.get("Impacto Tarifa")
     }
 
     return ambiental, energia

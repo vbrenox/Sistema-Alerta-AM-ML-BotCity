@@ -1,9 +1,8 @@
 import json
 import os
-import gspread
 from datetime import datetime
-from google.oauth2.service_account import Credentials
 from botcity.maestro import BotMaestroSDK, AutomationTask
+from botcity.plugins.googlesheets import BotGoogleSheetsPlugin
 
 # Maestro
 try:
@@ -16,15 +15,12 @@ except Exception:
     MAESTRO_ATIVO = False
 
 # Configurações
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
+SHEET_ID = "1wG6icQpwUmfjaL0KruwXelH9iAKV_UfRjwOURZXJDqE"
 
 # Caminhos dos arquivos
 BOT_DIR          = os.path.dirname(os.path.abspath(__file__))
 RAIZ             = os.path.dirname(BOT_DIR)
-CREDENTIALS_PATH = os.path.join(RAIZ, "config", "credentials.json")
+CREDENTIALS_PATH = os.path.join(RAIZ, "config", "oauth_credentials.json")
 AMBIENTAL_PATH   = os.path.join(RAIZ, "bot_ambiental", "telemetria_ambiental.json")
 ENERGIA_PATH     = os.path.join(RAIZ, "bot_energia", "telemetria_energia.json")
 SHEET_NAME       = "SistemaAlertaAM"
@@ -63,13 +59,8 @@ def definir_status(ambiental, energia):
 
 
 def gravar_sheets(ambiental, energia, status):
-    # Autentica no Google Sheets e insere uma nova linha com os dados coletados
-    creds  = Credentials.from_service_account_file(CREDENTIALS_PATH, scopes=SCOPES)
-    client = gspread.authorize(creds)
-
-    # Abre a planilha pelo nome exato e seleciona a primeira aba
-    planilha = client.open(SHEET_NAME)
-    aba      = planilha.sheet1
+    # Instancia o plugin com o credentials.json e o ID da planilha
+    bot_sheets = BotGoogleSheetsPlugin(CREDENTIALS_PATH, SHEET_ID)
 
     # Monta a linha com todos os dados coletados
     nova_linha = [
@@ -85,7 +76,7 @@ def gravar_sheets(ambiental, energia, status):
     ]
 
     # Insere a linha no final da planilha
-    aba.append_row(nova_linha)
+    bot_sheets.add_row(nova_linha)
     print(f"[BOT CONTROLADOR] Linha inserida: {nova_linha}")
 
 

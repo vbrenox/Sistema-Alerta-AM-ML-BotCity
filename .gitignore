@@ -13,3 +13,6 @@ config/credentials.json
 data/*.json
 data/*.csv
 .env
+config/oauth_credentials.json
+config/credentials.json
+config/token.json
