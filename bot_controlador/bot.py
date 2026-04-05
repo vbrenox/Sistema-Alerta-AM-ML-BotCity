@@ -23,7 +23,7 @@ RAIZ             = os.path.dirname(BOT_DIR)
 CREDENTIALS_PATH = os.path.join(RAIZ, "config", "oauth_credentials.json")
 AMBIENTAL_PATH   = os.path.join(RAIZ, "bot_ambiental", "telemetria_ambiental.json")
 ENERGIA_PATH     = os.path.join(RAIZ, "bot_energia", "telemetria_energia.json")
-SHEET_NAME       = "SistemaAlertaAM"
+
 
 
 def carregar_dados():
