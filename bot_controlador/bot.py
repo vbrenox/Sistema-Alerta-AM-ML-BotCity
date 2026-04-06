@@ -28,23 +28,30 @@ ENERGIA_PATH     = os.path.join(RAIZ, "bot_energia", "telemetria_energia.json")
 
 def carregar_dados():
     if MAESTRO_ATIVO:
-        # Lista todos os artefatos e baixa os JSONs necessários
         artifacts = maestro.list_artifacts()
+        
+        # Filtra e pega o artefato mais recente de cada tipo
+        ambiental_artifacts = [a for a in artifacts if a.name == "telemetria_ambiental.json"]
+        energia_artifacts   = [a for a in artifacts if a.name == "telemetria_energia.json"]
+        
+        # Ordena por ID decrescente — ID maior = mais recente
+        ambiental_artifacts.sort(key=lambda x: x.id, reverse=True)
+        energia_artifacts.sort(key=lambda x: x.id, reverse=True)
+        
+        # Baixa apenas o mais recente de cada
+        name, content = maestro.get_artifact(ambiental_artifacts[0].id)
+        with open(name, "wb") as f:
+            f.write(content)
 
-        for artifact in artifacts:
-            if artifact.name == "telemetria_ambiental.json":
-                name, content = maestro.get_artifact(artifact_id=artifact.id)
-                with open(name, "wb") as f:
-                    f.write(content)
-            if artifact.name == "telemetria_energia.json":
-                name, content = maestro.get_artifact(artifact_id=artifact.id)
-                with open(name, "wb") as f:
-                    f.write(content)
+        name, content = maestro.get_artifact(energia_artifacts[0].id)
+        with open(name, "wb") as f:
+            f.write(content)
 
         with open("telemetria_ambiental.json", encoding="utf-8") as f:
             ambiental = json.load(f)
         with open("telemetria_energia.json", encoding="utf-8") as f:
             energia = json.load(f)
+
     else:
         BOT_DIR = os.path.dirname(os.path.abspath(__file__))
         RAIZ    = os.path.dirname(BOT_DIR)
@@ -126,6 +133,16 @@ def main():
             task_id=execution.task_id,
             artifact_name="telemetria_energia.json",
             filepath="telemetria_energia.json"
+        )
+        
+        maestro.new_log_entry(
+            activity_label="victorbreno-execucao-v1-log",
+            values={
+                "bot": "bot_controlador",
+                "status": "SUCESSO",
+                "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                "mensagem": f"Status definido: {status} | Linha gravada no Sheets"
+            }
         )
         maestro.finish_task(
             task_id=execution.task_id,

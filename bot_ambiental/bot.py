@@ -192,12 +192,21 @@ def main():
                 artifact_name="telemetria_ambiental.json",
                 filepath=OUTPUT_PATH
             )
+            maestro.new_log_entry(
+                activity_label="victorbreno-execucao-v1-log",
+                values={
+                    "bot": "bot_ambiental",
+                    "status": "SUCESSO",
+                    "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "mensagem": f"Rio Negro: {rio.get('rio_negro_manaus')} | Focos: {focos.get('focos_incendio_am')} | IQAr: {iqar.get('iqar_manaus')}"
+                }
+            )
             maestro.finish_task(
                 task_id=execution.task_id,
                 status=AutomationTask.finish_status.SUCCESS,
                 message="Coleta ambiental concluída!"
             )
-
+            
     except Exception as e:
         print(f"[BOT AMBIENTAL] Erro: {e}")
         if MAESTRO_ATIVO:

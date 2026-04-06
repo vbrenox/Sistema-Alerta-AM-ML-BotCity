@@ -208,6 +208,15 @@ def main():
                 artifact_name="telemetria_energia.json",
                 filepath=OUTPUT_PATH
             )
+            maestro.new_log_entry(
+                activity_label="victorbreno-execucao-v1-log",
+                values={
+                    "bot": "bot_energia",
+                    "status": "SUCESSO",
+                    "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "mensagem": f"Balbina: {balbina.get('balbina_volume_util')} | Bandeira: {bandeira.get('bandeira_tarifaria')}"
+                }
+            )
             maestro.finish_task(
                 task_id=execution.task_id,
                 status=AutomationTask.finish_status.SUCCESS,

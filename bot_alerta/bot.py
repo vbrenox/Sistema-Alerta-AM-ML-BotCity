@@ -1,6 +1,5 @@
 import json
 import os
-from botcity.plugins.twilio import whatsapp
 from dotenv import load_dotenv
 from datetime import datetime
 from botcity.maestro import BotMaestroSDK, AutomationTask
@@ -18,14 +17,10 @@ except Exception:
 
 # busca do Credentials Vault do Maestro
 if MAESTRO_ATIVO:
-    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_SID")
-    TWILIO_SID   = cred.value
-    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TOKEN")
-    TWILIO_TOKEN = cred.value
-    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_FROM")
-    TWILIO_FROM  = cred.value
-    cred = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TO")
-    TWILIO_TO    = cred.value
+    TWILIO_SID   = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_SID")
+    TWILIO_TOKEN = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TOKEN")
+    TWILIO_FROM  = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_FROM")
+    TWILIO_TO    = maestro.get_credential("victorbreno-twilio-v1", "TWILIO_TO")
 else:
     # Fallback pro .env quando rodar local
     load_dotenv()
@@ -194,12 +189,20 @@ def main():
             artifact_name="alerta_enviado.txt",
             filepath=OUTPUT_PATH
         )
+        maestro.new_log_entry(
+            activity_label="victorbreno-execucao-v1-log",
+            values={
+                "bot": "bot_alerta",
+                "status": "SUCESSO",
+                "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
+                "mensagem": "Alerta enviado via WhatsApp com sucesso!"
+            }
+        )
         maestro.finish_task(
             task_id=execution.task_id,
             status=AutomationTask.finish_status.SUCCESS,
             message="Alerta enviado com sucesso!"
         )
-
 
 if __name__ == "__main__":
     main()
