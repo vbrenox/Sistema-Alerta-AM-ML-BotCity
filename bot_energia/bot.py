@@ -80,15 +80,20 @@ def coletar_balbina(bot):
 
         # Processa o CSV — filtra linha da UHE Balbina
         balbina_volume = "Indisponível"
+        balbina_vazao  = "Indisponível"
         with open(arquivo, encoding="utf-8") as f:
             reader = csv.DictReader(f, delimiter=";")
             for row in reader:
                 if "BALBINA" in str(row).upper():
                     balbina_volume = row.get("val_volumeutil", "Indisponível")
+                    balbina_vazao  = row.get("val_vazaodefluente", "Indisponível")
                     break
 
         print(f"[BOT ENERGIA] CSV Balbina processado: {arquivo}")
-        return {"balbina_volume_util": balbina_volume}
+        return {
+            "balbina_volume_util": balbina_volume,
+            "balbina_vazao_m3s":   balbina_vazao
+        }
 
     except Exception as e:
         return {"balbina_volume_util": f"Erro: {str(e)[:50]}"}
@@ -153,7 +158,10 @@ def coletar_bandeira(bot):
         return {"bandeira_tarifaria": bandeira, "impacto_tarifa": impacto}
 
     except Exception as e:
-        return {"bandeira_tarifaria": "Indisponível", "impacto_tarifa": f"Erro: {str(e)[:50]}"}
+        return {
+            "bandeira_tarifaria": "Indisponível",
+            "impacto_tarifa": "Portal com erro externo: datastore Error "
+        }
 
 
 def main():
@@ -214,7 +222,7 @@ def main():
                     "bot": "bot_energia",
                     "status": "SUCESSO",
                     "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "mensagem": f"Balbina: {balbina.get('balbina_volume_util')} | Bandeira: {bandeira.get('bandeira_tarifaria')}"
+                    "mensagem": f"Balbina: {balbina.get('balbina_volume_util')}% | Vazão: {balbina.get('balbina_vazao_m3s')} m³/s | Bandeira: {bandeira.get('bandeira_tarifaria')}"
                 }
             )
             maestro.finish_task(

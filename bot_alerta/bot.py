@@ -68,7 +68,9 @@ def carregar_dados():
     energia = {
         "balbina_volume_util": linha.get("Balbina (%)"),
         "bandeira_tarifaria" : linha.get("Bandeira"),
-        "impacto_tarifa"     : linha.get("Impacto Tarifa")
+        "impacto_tarifa"     : linha.get("Impacto Tarifa"),
+        "severidade_ml":       linha.get("Severidade", "NORMAL"),
+        "vazao_prevista":      linha.get("Vazão Prevista (m³/s)", "N/A")
     }
 
     return ambiental, energia
@@ -85,6 +87,8 @@ def montar_mensagem(ambiental, energia):
     iqar_valor   = ambiental.get("iqar_manaus", 0)
     iqar_nivel   = ambiental.get("iqar_nivel", "Indeterminado")
     data_hora    = datetime.now().strftime("%d/%m/%Y %H:%M")
+    severidade_ml  = energia.get("severidade_ml", "NORMAL")
+    vazao_prevista = energia.get("vazao_prevista", "N/A")
 
     # Classifica os focos de incêndio
     focos_num = int(focos) if str(focos).isdigit() else 0
@@ -121,25 +125,19 @@ def montar_mensagem(ambiental, energia):
     else:
         frase_balbina = "Represa Balbina em nível confortável. Sem risco de aumento na conta de luz por agora."
 
-    # Status geral
-    if focos_num > 50 or iqar_num > 150 or balbina_num < 30:
-        status = "[ALERTA CRÍTICO]"
-    elif focos_num > 20 or iqar_num > 100 or balbina_num < 50:
-        status = "[ATENÇÃO]"
-    else:
-        status = "[NORMAL]"
 
     # Monta a mensagem final
     msg = (
         f"*Sistema de Alerta Energético e Ambiental - AM*\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
         f"UHE Balbina: {balbina}% vol. útil\n"
+        f"Vazão prevista: {vazao_prevista} m³/s\n"
         f"Bandeira: {bandeira} - {bandeira_msg}\n\n"
         f"Focos de incêndio AM: {focos_label}\n"
         f"Rio Negro: {rio}\n"
         f"IQAr: {iqar_valor} - {iqar_nivel}, {frase_iqar}\n"
         f"━━━━━━━━━━━━━━━━━━━━\n"
-        f"Status Geral: {status}\n\n"
+        f"Status [ML]: {severidade_ml}\n\n"
         f"{frase_balbina}\n\n"
         f"━━━━━━━━━━━━━━━━━━━━\n" 
         f"Amazonas • {data_hora}"
