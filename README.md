@@ -1,4 +1,4 @@
-# Sistema de Alerta Energético e Ambiental — AM
+# Sistema de Alerta Energético e Ambiental-AM
 
 Automação web desenvolvida com **Python 3.11**, **BotCity Framework** e **BotCity Maestro** para monitoramento contínuo de indicadores ambientais e energéticos do Amazonas. O sistema coleta dados de portais governamentais, consolida em uma planilha Google Sheets e dispara alertas via WhatsApp.
 
@@ -23,12 +23,14 @@ O sistema é composto por 4 bots especializados, orquestrados pelo BotCity Maest
 - Windows 10/11
 - Google Chrome instalado
 - Conta ativa no [BotCity Maestro](https://developers.botcity.dev)
+- [BotCity Runner](https://developers.botcity.dev) instalado e configurado na máquina
 - Conta Twilio com WhatsApp Sandbox configurado
 - Projeto Google Cloud com a API Google Sheets habilitada
 
 ---
 
 ## Estrutura do Projeto
+```
 Sistema-Alerta-AM-BotCity/
 ├── bot_ambiental/
 │   ├── bot.py
@@ -51,6 +53,7 @@ Sistema-Alerta-AM-BotCity/
 ├── .env
 ├── .gitignore
 └── README.md
+```
 
 ---
 

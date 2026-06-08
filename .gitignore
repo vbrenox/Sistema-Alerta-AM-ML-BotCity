@@ -1,18 +1,42 @@
+# Ambiente virtual
 venv/
 .venv/
 env/
 
+# Python
 __pycache__/
 *.pyc
+*.py[cod]
+*.egg-info/
 
+# IDEs
 .idea/
 .vscode/
 
-venv/
-config/credentials.json
-data/*.json
-data/*.csv
+# Credenciais e configs sensíveis
 .env
 config/oauth_credentials.json
 config/credentials.json
 config/token.json
+config/token_sheets.json
+
+# Datasets brutos - versionados pelo DVC
+ml/data/raw/mensais/
+ml/data/raw/balbina_consolidado.csv
+ml/data/processed/balbina_processado.csv
+
+# MLflow
+ml/mlruns/
+mlruns/
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Entrega
+entrega_final/
+entrega_final.zip
+
+# Windows
+Thumbs.db
+desktop.ini

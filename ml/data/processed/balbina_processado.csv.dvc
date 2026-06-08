@@ -1,0 +1,5 @@
+outs:
+- md5: 6b0938f87cc04e5109a976030db9e480
+  size: 393670
+  hash: md5
+  path: balbina_processado.csv
