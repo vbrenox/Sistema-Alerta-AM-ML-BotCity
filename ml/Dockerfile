@@ -6,6 +6,6 @@ COPY requirements-api.txt .
 RUN pip install --no-cache-dir -r requirements-api.txt
 
 COPY src/ ./src/
-COPY mlruns/ ./mlruns/
+COPY mlruns/ ./ml/mlruns/
 
 CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]

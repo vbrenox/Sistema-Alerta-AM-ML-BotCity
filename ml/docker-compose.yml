@@ -4,7 +4,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./mlruns:/app/mlruns
+      - ./mlruns:/app/ml/mlruns
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/saude"]
       interval: 30s
