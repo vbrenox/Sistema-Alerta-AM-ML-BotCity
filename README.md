@@ -58,9 +58,9 @@ flowchart TD
     A --> C[Z-score sazonal\npor mês - corrige sazonalidade]
     B --> D{IsolationForest\nANOMALIA?}
     C --> E{Z-score\nALTO?}
-    D -->|sim + E sim| F[CRITICO ou ALTO]
-    D -->|sim OU E sim| G[MODERADO]
-    D -->|nao + E nao| H[NORMAL]
+    D -->|sim + sim| F[CRITICO ou ALTO]
+    D -->|sim OU sim| G[MODERADO]
+    D -->|nao + nao| H[NORMAL]
 ```
 
 ---
