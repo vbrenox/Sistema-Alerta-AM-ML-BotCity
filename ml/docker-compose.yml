@@ -1,3 +1,4 @@
+name: sistema-alerta-am-ml
 services:
   api:
     build: .
