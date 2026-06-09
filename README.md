@@ -54,13 +54,13 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Valor atual da vazão] --> B[IsolationForest\ntreino no dataset completo]
-    A --> C[Z-score sazonal\npor mês - corrige sazonalidade]
-    B --> D{IsolationForest\nANOMALIA?}
-    C --> E{Z-score\nALTO?}
-    D -->|sim AND sim| F[CRITICO ou ALTO]
-    D -->|sim OR sim| G[MODERADO]
-    D -->|nao AND nao| H[NORMAL]
+    A[Valor atual da vazao] --> B[IsolationForest]
+    A --> C[Z-score sazonal por mes]
+    B --> D{Combinacao\ndos detectores}
+    C --> D
+    D -->|ambos detectam| F[CRITICO ou ALTO]
+    D -->|um detecta| G[MODERADO]
+    D -->|nenhum detecta| H[NORMAL]
 ```
 
 ---
