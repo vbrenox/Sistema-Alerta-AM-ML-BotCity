@@ -166,7 +166,7 @@ def coletar_bandeira(bot):
 
 def main():
     bot = WebBot()
-    bot.headless = False
+    bot.headless = True
     bot.browser = Browser.CHROME
 
     # Chrome configurado pra baixar direto na pasta do bot

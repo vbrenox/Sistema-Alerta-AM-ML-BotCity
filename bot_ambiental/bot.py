@@ -146,7 +146,7 @@ def coletar_iqar(bot):
 
 def main():
     bot = WebBot()
-    bot.headless = False
+    bot.headless = True
     bot.browser = Browser.CHROME
 
     # Chrome configurado com permissões bloqueadas
