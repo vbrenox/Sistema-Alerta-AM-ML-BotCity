@@ -1,15 +1,16 @@
 *Sistema de Alerta Energético e Ambiental - AM*
 ━━━━━━━━━━━━━━━━━━━━
-UHE Balbina: 46.7% vol. útil
+UHE Balbina: 80.95% vol. útil
+Vazão prevista: 1042.94 m³/s
 Bandeira: Verde - Sem custo adicional na conta de luz
 
-Focos de incêndio AM: [NORMAL]- Sem foco nas últimas 48h 
-Rio Negro: 25.72 m
-IQAr: 37 - Bom, Ar limpo! Ótimo dia para atividades ao ar livre.
+Focos de incêndio AM: [BAIXO]- 2 focos nas últimas 48h
+Rio Negro: 28.24 m
+IQAr: 26 - Bom, Ar limpo! Ótimo dia para atividades ao ar livre.
 ━━━━━━━━━━━━━━━━━━━━
-Status Geral: [ATENÇÃO]
+Status [ML]: NORMAL
 
-Represa Balbina abaixo da metade. Fique de olho na sua conta de luz, o risco de cobrança extra ainda existe, controle seu consumo.
+Represa Balbina em nível confortável. Sem risco de aumento na conta de luz por agora.
 
 ━━━━━━━━━━━━━━━━━━━━
-Amazonas • 07/04/2026 22:28
+Amazonas • 09/06/2026 11:55
