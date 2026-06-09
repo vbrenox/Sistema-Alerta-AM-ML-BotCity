@@ -23,16 +23,16 @@ O Amazonas enfrenta desafios ambientais e energéticos críticos: variações no
 
 ```mermaid
 flowchart TD
-    A[bot_ambiental\nSACE, INPE, IQAr] --> E[telemetria_ambiental.json]
-    B[bot_energia\nONS, ANEEL] --> F[telemetria_energia.json]
+    A["bot_ambiental - SACE, INPE, IQAr"] --> E[telemetria_ambiental.json]
+    B["bot_energia - ONS, ANEEL"] --> F[telemetria_energia.json]
     E --> G[bot_controlador]
     F --> G
-    G -->|POST /predict| H[FastAPI - Docker\nXGBoost @production]
-    H -->|vazao_prevista + severidade| G
-    G --> I[Google Sheets\nPlanilha consolidada + ML]
-    G --> J[Evidently AI\nrelatório drift HTML]
-    I --> K[bot_alerta\nTwilio WhatsApp]
-    K --> L[Alerta WhatsApp\nStatus ML + severidade]
+    G -->|POST /predict| H["FastAPI - Docker - XGBoost @production"]
+    H -->|vazao_prevista + severidade| G2["bot_controlador - decisao ML"]
+    G2 --> I["Google Sheets - Planilha consolidada + ML"]
+    G2 --> J["Evidently AI - relatorio drift HTML"]
+    I --> K["bot_alerta - Twilio WhatsApp"]
+    K --> L["Alerta WhatsApp - Status ML + severidade"]
 ```
 
 ### Pipeline de ML
